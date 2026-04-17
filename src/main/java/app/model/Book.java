@@ -23,6 +23,10 @@ public class Book {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private Author author;
+
     protected Book() {
     }
 
@@ -55,6 +59,10 @@ public class Book {
 
     public void updatePrice(BigDecimal newPrice) {
         this.price = newPrice;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override
