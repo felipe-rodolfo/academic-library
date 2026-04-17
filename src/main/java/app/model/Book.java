@@ -2,7 +2,9 @@ package app.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -26,6 +28,14 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "book_categories",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 
     protected Book() {
     }
@@ -63,6 +73,11 @@ public class Book {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public void addCategory(Category category) {
+        categories.add(category);
+        category.getBooks().add(this);
     }
 
     @Override

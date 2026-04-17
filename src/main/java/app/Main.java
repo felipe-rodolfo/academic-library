@@ -2,6 +2,7 @@ package app;
 
 import app.model.Author;
 import app.model.Book;
+import app.model.Category;
 import app.repository.BookRepository;
 import app.util.JPAUtil;
 import jakarta.persistence.EntityManager;
@@ -12,24 +13,25 @@ public class Main {
 
     public static void main(String[] args) {
         EntityManager em = JPAUtil.getEntityManager();
+
         Author author = new Author("Robert Martin");
 
-        Book book1 = new Book(
+        Book book = new Book(
                 "Clean Code",
-                "1111",
+                "3333",
                 2008,
-                new BigDecimal("90")
+                new BigDecimal("99.90")
         );
 
-        Book book2 = new Book(
-                "Clean Architecture",
-                "2222",
-                2017,
-                new BigDecimal("120")
-        );
+        Category c1 = new Category("Programming");
+        Category c2 = new Category("Architecture");
+        Category c3 = new Category("Backend");
 
-        author.addBook(book1);
-        author.addBook(book2);
+        book.addCategory(c1);
+        book.addCategory(c2);
+        book.addCategory(c3);
+
+        author.addBook(book);
 
         em.getTransaction().begin();
 
