@@ -39,4 +39,12 @@ public class BookService {
             repository.delete(book);
         }
     }
+
+    public List<Book> expensiveBooks(BigDecimal price) {
+        return repository.findByPriceGreaterThan(price);
+    }
+
+    public List<Book> searchByTitle(String text) {
+        return repository.findByTitleContaining(text);
+    }
 }
