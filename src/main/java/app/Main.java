@@ -1,9 +1,7 @@
 package app;
 
 import app.dto.BookFilter;
-import app.model.Author;
-import app.model.Book;
-import app.model.Category;
+import app.model.*;
 import app.repository.BookRepository;
 import app.service.BookService;
 import app.util.JPAUtil;
@@ -17,16 +15,24 @@ public class Main {
 
         EntityManager em = JPAUtil.getEntityManager();
 
-        BookService service = new BookService(em);
+        em.getTransaction().begin();
 
-        BookFilter filter = new BookFilter();
-        filter.setTitle("clean");
-        filter.setMinPrice(new BigDecimal("80"));
-        filter.setAuthorName("Robert Martin");
+        Reader reader = new Reader(
+                "Ana",
+                "ana@email.com",
+                "MAT123"
+        );
 
-        service.search(filter)
-                .forEach(book -> System.out.println(book.getTitle()));
+        Admin admin = new Admin(
+                "Carlos",
+                "carlos@email.com",
+                10
+        );
 
+        em.persist(reader);
+        em.persist(admin);
+
+        em.getTransaction().commit();
         em.close();
     }
 }
