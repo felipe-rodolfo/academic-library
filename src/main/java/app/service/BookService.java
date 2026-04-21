@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.BookFilter;
 import app.dto.BookSummaryDTO;
 import app.model.Book;
 import app.repository.BookRepository;
@@ -55,5 +56,9 @@ public class BookService {
 
     public List<Book> listAllWithAuthor() {
         return repository.findAllWithAuthor();
+    }
+
+    public List<Book> search(BookFilter filter) {
+        return repository.search(filter);
     }
 }

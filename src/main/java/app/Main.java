@@ -1,5 +1,6 @@
 package app;
 
+import app.dto.BookFilter;
 import app.model.Author;
 import app.model.Book;
 import app.model.Category;
@@ -18,10 +19,13 @@ public class Main {
 
         BookService service = new BookService(em);
 
-        service.listAllWithAuthor()
-                .forEach(book -> {
-                    System.out.println(book.getTitle());
-                });
+        BookFilter filter = new BookFilter();
+        filter.setTitle("clean");
+        filter.setMinPrice(new BigDecimal("80"));
+        filter.setAuthorName("Robert Martin");
+
+        service.search(filter)
+                .forEach(book -> System.out.println(book.getTitle()));
 
         em.close();
     }

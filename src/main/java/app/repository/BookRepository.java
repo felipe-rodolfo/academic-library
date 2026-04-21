@@ -1,10 +1,13 @@
 package app.repository;
 
+import app.dto.BookFilter;
 import app.dto.BookSummaryDTO;
 import app.model.Book;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookRepository {
@@ -100,6 +103,55 @@ public class BookRepository {
                 """,
                 Book.class
         ).getResultList();
+    }
+
+    public List<Book> search(BookFilter filter) {
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Book> query = cb.createQuery(Book.class);
+
+        Root<Book> book = query.from(Book.class);
+
+        Join<Object, Object> author = book.join("author");
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (filter.getTitle() != null) {
+            predicates.add(
+                    cb.like(
+                            cb.lower(book.get("title")),
+                            "%" + filter.getTitle().toLowerCase() + "%"
+                    )
+            );
+        }
+
+        if (filter.getMinPrice() != null) {
+            predicates.add(
+                    cb.greaterThanOrEqualTo(
+                            book.get("price"),
+                            filter.getMinPrice()
+                    )
+            );
+        }
+
+        if (filter.getYear() != null) {
+            predicates.add(
+                    cb.equal(book.get("publicationYear"), filter.getYear())
+            );
+        }
+
+        if (filter.getAuthorName() != null) {
+            predicates.add(
+                    cb.equal(author.get("name"), filter.getAuthorName())
+            );
+        }
+
+        query.select(book)
+                .where(predicates.toArray(new Predicate[0]))
+                .orderBy(cb.asc(book.get("title")));
+
+        return entityManager.createQuery(query).getResultList();
     }
 
 }
