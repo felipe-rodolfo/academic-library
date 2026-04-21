@@ -52,4 +52,8 @@ public class BookService {
     public List<BookSummaryDTO> summaries() {
         return repository.findBookSummaries();
     }
+
+    public List<Book> listAllWithAuthor() {
+        return repository.findAllWithAuthor();
+    }
 }

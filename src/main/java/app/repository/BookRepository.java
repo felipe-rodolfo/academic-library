@@ -90,4 +90,16 @@ public class BookRepository {
         ).getResultList();
     }
 
+    public List<Book> findAllWithAuthor() {
+        return entityManager.createQuery(
+                """
+                SELECT b
+                FROM Book b
+                JOIN FETCH b.author
+                ORDER BY b.title
+                """,
+                Book.class
+        ).getResultList();
+    }
+
 }

@@ -18,8 +18,10 @@ public class Main {
 
         BookService service = new BookService(em);
 
-        service.summaries()
-                .forEach(System.out::println);
+        service.listAllWithAuthor()
+                .forEach(book -> {
+                    System.out.println(book.getTitle());
+                });
 
         em.close();
     }
