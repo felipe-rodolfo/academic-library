@@ -1,5 +1,6 @@
 package app.repository;
 
+import app.dto.BookSummaryDTO;
 import app.model.Book;
 import jakarta.persistence.EntityManager;
 
@@ -72,6 +73,21 @@ public class BookRepository {
                 )
                 .setParameter("name", authorName)
                 .getResultList();
+    }
+
+    public List<BookSummaryDTO> findBookSummaries() {
+        return entityManager.createQuery(
+                """
+                SELECT NEW BookSummaryDTO(
+                    b.title,
+                    a.name
+                )
+                FROM Book b
+                JOIN b.author a
+                ORDER BY b.title
+                """,
+                BookSummaryDTO.class
+        ).getResultList();
     }
 
 }

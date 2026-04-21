@@ -15,20 +15,11 @@ public class Main {
     public static void main(String[] args) {
 
         EntityManager em = JPAUtil.getEntityManager();
+
         BookService service = new BookService(em);
 
-        em.getTransaction().begin();
-
-        service.create(
-                new Book(
-                        "Java Effective",
-                        "4444",
-                        2018,
-                        new BigDecimal("120")
-                )
-        );
-
-        em.getTransaction().commit();
+        service.summaries()
+                .forEach(System.out::println);
 
         em.close();
     }

@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.BookSummaryDTO;
 import app.model.Book;
 import app.repository.BookRepository;
 import jakarta.persistence.EntityManager;
@@ -46,5 +47,9 @@ public class BookService {
 
     public List<Book> searchByTitle(String text) {
         return repository.findByTitleContaining(text);
+    }
+
+    public List<BookSummaryDTO> summaries() {
+        return repository.findBookSummaries();
     }
 }
